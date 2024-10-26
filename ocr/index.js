@@ -55,4 +55,4 @@ app.post('/api/pdf', upload.single('file'), (req, res) => {
         res.status(500).json({ error: error })
     }
 })
-app.listen(3001, () => console.log('RUNNING ON PORT 3001'))
+app.listen(3000, () => console.log('RUNNING ON PORT 3000'))
