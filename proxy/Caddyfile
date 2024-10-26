@@ -4,5 +4,5 @@
 }
 
 hackathon24.interestedowl.de {
-	reverse_proxy * frontend:3001
+	reverse_proxy * frontend:3000
 }
