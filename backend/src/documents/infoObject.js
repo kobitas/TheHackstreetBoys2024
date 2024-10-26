@@ -20,6 +20,7 @@ const infoObjectSchema = new Schema({
   metaData: { type: Map, of: String }, // Map für Meta-Daten mit beliebigen Key-Value-Paaren
   views: { type: Number, default: 0 }, // Anzahl der Aufrufe
   permissionLevel: { type: String, enum: ['public', 'private', 'restricted'], default: 'private' }, // Berechtigungslevel für den Zugriff
+  fileEncoding: {type: String }
 });
 
 // Vor dem Speichern das Aktualisierungsdatum aktualisieren
