@@ -1,9 +1,15 @@
 ---
 
 services:
+  proxy:
+    image: caddy:2.8.4
+    volumes:
+      - ./proxy/Caddyfile:/etc/caddy/Caddyfile
+    ports:
+      - "80:80"
+      - "443:443"
   backend:
-    build:
-      context: src
+    build: src
     ports:
       - "3000:3000"
   mongodb:
