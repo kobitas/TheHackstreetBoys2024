@@ -1,0 +1,6 @@
+---
+
+- name: Update Host
+  ansible.builtin.apt:
+    upgrade: dist
+    update_cache: yes
