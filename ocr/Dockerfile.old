@@ -1,0 +1,13 @@
+FROM ubuntu:24.04 AS BUILD
+RUN apt-get update && apt-get install -y curl wget gpg
+RUN wget https://go.dev/dl/go1.23.2.linux-amd64.tar.gz && tar -C /usr/local -xzf go1.23.2.linux-amd64.tar.gz
+RUN  apt-get install -y debian-keyring debian-archive-keyring apt-transport-https
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/caddy/xcaddy/gpg.key' |  gpg --dearmor -o /usr/share/keyrings/caddy-xcaddy-archive-keyring.gpg
+RUN curl -1sLf 'https://dl.cloudsmith.io/public/caddy/xcaddy/debian.deb.txt' | tee /etc/apt/sources.list.d/caddy-xcaddy.list
+RUN apt-get update -y && apt install xcaddy
+RUN export PATH=$PATH:/usr/local/go/bin; xcaddy build --with github.com/abiosoft/caddy-exec
+
+FROM ubuntu:24.04
+COPY --from=BUILD /caddy /bin/
+RUN apt-get install tesseract-ocr
+ENTRYPOINT caddy run --config /etc/caddy/Caddyfile --adapter caddyfile
