@@ -10,7 +10,7 @@ services:
       - "443:443"
   backend:
     build: src
-    ports:
-      - "3000:3000"
+  frontend:
+    build: frontend
   mongodb:
     image: "mongo:8.0.3"
