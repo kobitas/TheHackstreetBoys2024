@@ -6,7 +6,8 @@ services:
     volumes:
       - ./proxy/Caddyfile:/etc/caddy/Caddyfile
     ports:
-      - "80:8080"
+      - "80:80"
+      - "443:443"
   backend:
     build: src
     ports:
