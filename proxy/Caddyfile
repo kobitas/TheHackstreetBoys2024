@@ -1,0 +1,8 @@
+{
+	http_port 80
+	https_port 443
+}
+
+hackathon24.interestedowl.de {
+	reverse_proxy * frontend:3001
+}
