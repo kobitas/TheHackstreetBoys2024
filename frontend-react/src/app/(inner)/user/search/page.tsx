@@ -6,6 +6,7 @@ import { UploadFileModal } from '@/components/modals/UploadFileModal'
 import { SearchResults, SearchResult } from '@/components/SearchResults'
 import { SearchSummary } from '@/components/search-summary'
 import { Search } from 'lucide-react'
+import { theme } from "@/lib/theme"
 
 const SearchPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -35,27 +36,63 @@ const SearchPage: React.FC = () => {
   }
 
   return (
-    <div className="w-full max-w-[95%] mx-auto px-2 sm:px-4 py-4">
-      <div className="flex space-x-2 mb-4">
+    <div className={`w-full max-w-[95%] mx-auto px-2 sm:px-4 py-4 ${theme.colors.background}`}>
+      <div className="flex flex-col sm:flex-row gap-3 mb-4">
         <div className="relative flex-grow">
           <input
             type="text"
             placeholder="Suche nach..."
-            className="w-full border rounded px-4 py-2 pr-10"
+            className={`
+              w-full px-4 py-3 pr-12
+              bg-white 
+              rounded-lg
+              ${theme.typography.paragraph}
+              text-[#001E27]
+              border-none
+              shadow-[0px_4px_16px_0px_rgba(255,255,255,0.1)]
+              focus:outline-none 
+              focus:ring-2 
+              focus:ring-[#78D1F2]
+            `}
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
           />
-          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+          <Search 
+            className="absolute right-3 top-1/2 transform -translate-y-1/2 w-6 h-6" 
+            color="#001E27"
+          />
         </div>
-        <Button variant="default" size="lg" onClick={handleSearch} disabled={isSearching}>
+
+        <Button 
+          onClick={handleSearch} 
+          disabled={isSearching}
+          className={`
+            ${theme.typography.buttonText}
+            rounded-lg
+            min-w-[120px]
+            bg-[#5D41EC]
+            text-white
+            hover:bg-[#5D41EC]/90
+            shadow-[0px_4px_16px_0px_rgba(93,65,236,0.2)]
+            px-6
+            py-3
+          `}
+        >
           {isSearching ? "Searching..." : "Search"}
         </Button>
       </div>
+
+
+      {/* Search Results */}
       {hasSearched && !isSearching && (
         <>
           {searchResults.length === 0 ? (
-            <div className="text-center text-gray-500 mt-8">
-              No results found for `&quot;`{searchQuery}`&quot;`
+            <div className={`
+              text-center mt-8
+              ${theme.typography.paragraph}
+              ${theme.colors.textLight}
+            `}>
+              No results found for "{searchQuery}"
             </div>
           ) : (
             <>
@@ -65,6 +102,7 @@ const SearchPage: React.FC = () => {
           )}
         </>
       )}
+
       <UploadFileModal
         isOpen={isUploadModalOpen}
         onClose={() => setIsUploadModalOpen(false)}

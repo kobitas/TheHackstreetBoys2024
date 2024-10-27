@@ -96,9 +96,10 @@ export default function AddUserPage() {
   return (
     <div className="min-h-screen bg-[#001524] p-8">
       {/* Purple pill/line */}
-      <div className="w-24 h-2 bg-[#6C5DD3] rounded-full mb-4"></div>
+      <div className="w-32 h-2
+       bg-accent rounded-full mb-4"></div>
       
-      <h1 className="text-3xl font-bold text-white mb-12">DATEI HOCHLADEN</h1>
+      <h1 className="font-poppins font-semibold text-xl leading-normal text-white mb-12 text-center">Datei hochladen</h1>
       
       {/* Hidden file inputs */}
       <input
