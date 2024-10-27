@@ -61,7 +61,6 @@ export default function AddUserPage() {
       const analysisResponse = await generateImageSummary(imageUrl);
       if (analysisResponse) {
         const analysis = JSON.parse(analysisResponse);
-        
         // Update the record with AI analysis
         const updateData = {
           ai_topic: analysis.topic,
