@@ -70,12 +70,12 @@ const SearchPage: React.FC = () => {
             ${theme.typography.buttonText}
             rounded-lg
             min-w-[120px]
+            h-[50px]
             bg-[#5D41EC]
             text-white
             hover:bg-[#5D41EC]/90
             shadow-[0px_4px_16px_0px_rgba(93,65,236,0.2)]
             px-6
-            py-3
           `}
         >
           {isSearching ? "Searching..." : "Search"}

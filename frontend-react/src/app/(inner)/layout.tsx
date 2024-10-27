@@ -36,7 +36,7 @@ export default function InnerLayout({ children }: { children: React.ReactNode })
             
             {/* Bottom Navigation - Updated according to Figma */}
             <nav 
-                className="h-[68px] w-full max-w-[393px] mx-auto px-4 
+                className="h-[68px] w-full mx-auto px-4 
                           flex justify-center items-center
                           bg-[#010709] rounded-t-lg
                           shadow-[0px_4px_16px_0px_#78D1F2]"
