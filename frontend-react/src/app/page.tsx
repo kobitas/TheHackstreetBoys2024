@@ -16,13 +16,17 @@ export default function Home() {
         </h1>
         
         <div className="flex flex-col gap-3 max-w-[280px]">
-          <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
-            Anmelden
-          </Button>
+          <Link href="/user/home">
+            <Button className="w-full bg-indigo-500 hover:bg-indigo-600">
+              Anmelden
+            </Button>
+          </Link>
           
-          <Button variant="outline" className="w-full">
-            Registrieren
-          </Button>
+          <Link href="/user/home">
+            <Button variant="outline" className="w-full">
+              Registrieren
+            </Button>
+          </Link>
         </div>
       </div>
     </div>

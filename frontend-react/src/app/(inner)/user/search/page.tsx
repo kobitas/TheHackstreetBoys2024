@@ -5,6 +5,7 @@ import { Button } from "@/components/ui/button"
 import { UploadFileModal } from '@/components/modals/UploadFileModal'
 import { SearchResults, SearchResult } from '@/components/SearchResults'
 import { SearchSummary } from '@/components/search-summary'
+import { Search } from 'lucide-react'
 
 const SearchPage: React.FC = () => {
   const [searchQuery, setSearchQuery] = useState('')
@@ -35,28 +36,20 @@ const SearchPage: React.FC = () => {
 
   return (
     <div className="w-full max-w-[95%] mx-auto px-2 sm:px-4 py-4">
-      <div className="flex justify-between items-center mb-4">
-        <h1 className="text-2xl font-bold">Explorer</h1>
-        <Button
-          variant="default"
-          size="lg"
-          onClick={() => setIsUploadModalOpen(true)}
-        >
-          Upload file
-        </Button>
-      </div>
       <div className="flex space-x-2 mb-4">
-        <input
-          type="text"
-          placeholder="Search for projects, info, etc."
-          className="flex-grow border rounded px-4 py-2"
-          value={searchQuery}
-          onChange={(e) => setSearchQuery(e.target.value)}
-        />
+        <div className="relative flex-grow">
+          <input
+            type="text"
+            placeholder="Suche nach..."
+            className="w-full border rounded px-4 py-2 pr-10"
+            value={searchQuery}
+            onChange={(e) => setSearchQuery(e.target.value)}
+          />
+          <Search className="absolute right-3 top-1/2 transform -translate-y-1/2 text-gray-400 w-5 h-5" />
+        </div>
         <Button variant="default" size="lg" onClick={handleSearch} disabled={isSearching}>
           {isSearching ? "Searching..." : "Search"}
         </Button>
-        <Button variant="secondary" size="lg">Chat</Button>
       </div>
       {hasSearched && !isSearching && (
         <>
