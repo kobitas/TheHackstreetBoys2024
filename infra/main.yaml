@@ -3,3 +3,5 @@
 - hosts: webservers
   roles:
   - install-docker
+  - create-users
+  - deployment
