@@ -12,7 +12,7 @@ export async function POST(request: Request) {
     const systemMessage = {
       role: "system" as const,
       content: `Du bist ein hilfreicher Assistent.  Fasse die folgenden Suchergebnisse prägnant auf Deutsch zusammen.
-      Stelle sicher, dass deine Zusammenfassung informativ und leicht verständlich ist. Gib für jede Information die entsprechende Quelle an.
+      Stelle sicher, dass deine Zusammenfassung informativ und leicht verständlich ist. Gib für jede Information die entsprechende Quelle als id an.
       Formatiere deine Antwort als JSON-Objekt mit folgender Struktur:
       {
             "zusammenfassung": "Deine Zusammenfassung hier",
