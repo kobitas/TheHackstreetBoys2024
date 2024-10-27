@@ -1,6 +1,6 @@
-import mongoose from 'index.js';
+const  mongoose = require('mongoose');
 const { Schema, model } = mongoose;
-const commentSchema = require('./comment');
+const commentSchema = require('./comment.js');
 
 
 // Schema für das Informationsobjekt
@@ -12,14 +12,15 @@ const infoObjectSchema = new Schema({
   tags: [{ type: String }], // Array von Tags für die Kategorisierung
   createdAt: { type: Date, default: Date.now }, // Erstellungsdatum
   updatedAt: { type: Date, default: Date.now }, // Letztes Aktualisierungsdatum
-  comments: [commentSchema], // Array von Kommentaren als Unterdokumente
-  type: { type: String, enum: ['article', 'video', 'file', 'link', 'other'], required: true }, // Typ des Informationsobjekts
-  content: { type: String, required: true }, // Inhalt des Informationsobjekts (z.B. Text)
+  //comments: [commentSchema], // Array von Kommentaren als Unterdokumente
+  type: { type: String, required: true }, // Typ des Informationsobjekts
+  content: { type: String }, // Inhalt des Informationsobjekts (z.B. Text)
   linkToFile: { type: String }, // URL zu einer verknüpften Datei
   jsonObject: { type: Schema.Types.Mixed }, // JSON-Objekt für beliebige strukturierte Daten
   metaData: { type: Map, of: String }, // Map für Meta-Daten mit beliebigen Key-Value-Paaren
   views: { type: Number, default: 0 }, // Anzahl der Aufrufe
   permissionLevel: { type: String, enum: ['public', 'private', 'restricted'], default: 'private' }, // Berechtigungslevel für den Zugriff
+  fileEncoding: {type: String }
 });
 
 // Vor dem Speichern das Aktualisierungsdatum aktualisieren

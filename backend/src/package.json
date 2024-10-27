@@ -17,8 +17,11 @@
   },
   "homepage": "https://github.com/kobitas/TheHackstreetBoys2024#readme",
   "dependencies": {
+    "body-parser": "^1.20.3",
+    "cors": "^2.8.5",
     "dotenv": "^16.4.5",
     "express": "^4.21.1",
-    "mongoose": "^8.7.3"
+    "mongoose": "^8.7.3",
+    "multiparty": "^4.2.3"
   }
 }

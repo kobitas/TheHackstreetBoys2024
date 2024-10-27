@@ -15,10 +15,19 @@ import { Textarea } from "@/components/ui/textarea"
 import FileDropzone from "@/components/file-dropzone"
 import { Progress } from "@/components/ui/progress"
 import { CheckCircle2, FileText, Loader2, Upload, X } from "lucide-react"
+import { pb } from '@/lib/pocketbase'
+import { storeDocument } from '@/lib/qdrant'
 
 interface UploadFileModalProps {
   isOpen: boolean
   onClose: () => void
+}
+
+interface ImageAnalysis {
+  topic: string;
+  summary: string;
+  keywords: string[];
+  probability: number;
 }
 
 export function UploadFileModal({ isOpen, onClose }: UploadFileModalProps) {
@@ -27,42 +36,84 @@ export function UploadFileModal({ isOpen, onClose }: UploadFileModalProps) {
   const [description, setDescription] = useState('')
   const [isLoading, setIsLoading] = useState(false)
   const [isSuccess, setIsSuccess] = useState(false)
-  const [fileProgress, setFileProgress] = useState<{ [key: string]: number }>({})
+  // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+  // @ts-ignore
+  const [fileProgress, setFileProgress] = useState<{ [key: string]: number }>([])
+  const [analysis, setAnalysis] = useState<ImageAnalysis | null>(null)
 
   const removeFile = (fileToRemove: File) => {
     setFiles(files.filter((file) => file !== fileToRemove))
   }
 
+  const generateImageSummary = async (imageUrl: string) => {
+    try {
+      const response = await fetch('/api/generate-summary', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({ imageUrl }),
+      })
+      
+      if (!response.ok) {
+        throw new Error('Failed to generate summary')
+      }
+
+      const data = await response.json()
+      return data.analysis  // Changed from data.summary to data.analysis
+    } catch (error) {
+      console.error('Error generating summary:', error)
+      return null
+    }
+  }
+
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
-    if (files.length === 0) return
 
     try {
       setIsLoading(true)
+      const file = files[0]
+
+      // Create FormData instance
       const formData = new FormData()
-      
-      // Process each file with progress tracking
-      for (const file of files) {
-        formData.append('files', file)
-        setFileProgress(prev => ({ ...prev, [file.name]: 0 }))
-        
-        // Simulate progress (in real app, you'd get this from your upload mechanism)
-        for (let i = 0; i <= 100; i += 20) {
-          setFileProgress(prev => ({ ...prev, [file.name]: i }))
-          await new Promise(resolve => setTimeout(resolve, 200))
-        }
-      }
-      
       formData.append('title', title)
       formData.append('description', description)
+      formData.append('image', file)
+      
+      setFileProgress({ [file.name]: 0 })
+      
+      // First create the record
+      const record = await pb.collection('posts').create(formData)
+      
+      // Construct the image URL
+      const imageUrl = `https://hackathon-fulda.pockethost.io/api/files/${record.collectionId}/${record.id}/${record.image}`
+      console.log('Image URL:', imageUrl)
 
-      const response = await fetch('/api/generate-summary', {
-        method: 'POST',
-        body: formData,
-      })
+      // Generate summary using API route
+      // {"topic":"Recruitment Flyer","summary":"Der Flyer wirbt für kaleidos","keywords":["kaleidos:code","Join now","Entwickler*innen"],"probability":0.9}
+      const analysisResponse = await generateImageSummary(imageUrl)
+      if (analysisResponse) {
+        const analysis = JSON.parse(analysisResponse)
+        setAnalysis(analysis)
+        
+        // Update the record with AI analysis
+        const updateData = {
+          ai_topic: analysis.topic,
+          ai_summary: analysis.summary,
+          ai_keywords: analysis.keywords, // Convert array to comma-separated string
+          ai_probability: analysis.probability,
+        }
+        
+        // Update the record with AI data
+        await pb.collection('posts').update(record.id, updateData)
 
-      const data = await response.json()
-      console.log('Response data:', data)  // Added this line
+        const analysisWithImageUrl = { ...analysis, imageUrl: imageUrl, id: record.id };
+        console.log('Analysis:', analysisWithImageUrl)
+
+        // Store the document in Qdrant
+        await storeDocument(analysisWithImageUrl);
+      }
+      
       setIsSuccess(true)
 
       // Reset form after short delay
@@ -76,7 +127,7 @@ export function UploadFileModal({ isOpen, onClose }: UploadFileModalProps) {
       }, 2000)
 
     } catch (error) {
-      console.error('Error uploading file:', error)
+      console.error('Error:', error)
     } finally {
       setIsLoading(false)
     }
