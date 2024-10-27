@@ -51,7 +51,7 @@ export default function AddUserPage() {
       if (file.type === 'application/pdf') {
         formData.append('files', file);
         
-        const response = await fetch('/api/process-pdf', {
+        const response = await fetch('/api/info-object/upload', {
           method: 'POST',
           body: formData,
         });
