@@ -2,6 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import multer from 'multer'
 import cp from 'child_process'
+const expressQueue = require('express-queue');
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
@@ -16,7 +17,9 @@ const storage = multer.diskStorage({
 const upload = multer({ storage: storage })
 const app = express()
 app.use(express.json())
-app.use(cors())
+app.use(cors());
+
+app.use(expressQueue({ activeLimit: 2, queuedLimit: -1 }))
 
 app.post('/api/image', upload.single('file'), (req, res) => {
     try {
@@ -26,7 +29,7 @@ app.post('/api/image', upload.single('file'), (req, res) => {
                 return;
             }
             console.log(stdout);
-            res.status(200).json({ stdout })
+            res.status(200).json({ content: stdout, filename : req.file.filename })
         });
 
     } catch (error) {
@@ -43,12 +46,12 @@ app.post('/api/pdf', upload.single('file'), (req, res) => {
                         return
                     }
                     console.log(stdout);
-                    res.status(200).json({ stdout })
+                    res.status(200).json({ content: stdout, filename : req.file.filename })
                 });
                 return
             }
             console.log(stdout);
-            res.status(200).json({ stdout })
+            res.status(200).json({ content: stdout, filename : req.file.filename })
         });
 
     } catch (error) {

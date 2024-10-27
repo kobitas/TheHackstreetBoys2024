@@ -1,18 +1,19 @@
-//import {mongoose} from "../index";
+import {mongoose} from "../index";
 var fs = require('fs');
 const multiparty = require('multiparty');
 const {join} = require("path");
 const {writeFile} = require("fs/promises");
 const {parse} = require("dotenv");
-//const db = require("../documents");
-//const InfoObject = db.InfoObject;
+const db = require("../documents/");
+const InfoObject = db.InfoObject;
 
 exports.create = (req, res) => {
     var form = new multiparty.Form();
+    let parsedFiles = [];
     form.parse(req, function(err, fields, files) {
         // fields fields fields
         console.log(files);
-        const parsedFiles = files.files.map(async file => {
+        parsedFiles = files.files.map(async file => {
             // Convert File to ArrayBuffer
             const buffer = fs.readFileSync(file.path);
             // const bytes = await file.arrayBuffer()
@@ -32,11 +33,46 @@ exports.create = (req, res) => {
                 type: file.headers['content-type'],
                 lastModified: file.lastModified,
                 path: filePath
-            }
+            };
         });
         console.log(JSON.stringify(parsedFiles));
+        //Save files into monbodb
+        parsedFiles.forEach(async file => {
+           InfoObject.create({name: file.name, size: file.size, type: file.type, updatedAt: file.lastModified, linkToFile: file.path});
+        });
 
     });
+    // For further completeness end initial request and process the files individually based on there type
+
+    res.send('OK');
+    parsedFiles.forEach(file => {
+        const formData = new FormData()
+
+        formData.append('file', file)
+
+        if (file.type.includes('image/')) {
+            fetch('ocr:3000/api/image', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(r => r.json() )
+                .then(json => {
+                let { content, filename }  = json;
+                InfoObject.findOneAndUpdate({name: filename}, { content: content});
+            });
+        } else if (file.type.includes('application/pdf') || file.type.includes('application/msword') || file.type.includes('application/rtf') || file.type.includes('application/vnd.oasis.opendocument')) {
+            fetch('ocr:3000/api/pdf', {
+                method: 'POST',
+                body: formData,
+            })
+                .then(r => r.json() )
+                .then(json => {
+                let { content, filename } = json;
+                    InfoObject.findOneAndUpdate({name: filename}, { content: content});
+            })
+        }
+    })
+
 
     // let tmp_path = req.files.thumbnail.path;
     // let target_path = './public/images/' + req.files.thumbnail.name;

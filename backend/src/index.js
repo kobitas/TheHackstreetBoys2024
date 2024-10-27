@@ -33,16 +33,16 @@ app.post('/api/info-object/upload', (req, res) => infoObjectController.create(re
 
 app.listen(3000, () => console.log('Server is running'));
 
-// const mongoose = require('mongoose');
-//
-// mongoose.connect(
-//     process.env.MONGODB_URI,
-//     {
-//         useNewUrlParser: true,
-//         useUnifiedTopology: true,
-//     }
-// )
+const mongoose = require('mongoose');
 
-// module.exports = {
-//     mongoose
-// }
+mongoose.connect(
+    process.env.MONGODB_URI,
+    {
+        useNewUrlParser: true,
+        useUnifiedTopology: true,
+    }
+)
+
+module.exports = {
+    mongoose
+}

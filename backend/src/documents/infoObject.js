@@ -13,8 +13,8 @@ const infoObjectSchema = new Schema({
   createdAt: { type: Date, default: Date.now }, // Erstellungsdatum
   updatedAt: { type: Date, default: Date.now }, // Letztes Aktualisierungsdatum
   comments: [commentSchema], // Array von Kommentaren als Unterdokumente
-  type: { type: String, enum: ['article', 'video', 'file', 'link', 'other'], required: true }, // Typ des Informationsobjekts
-  content: { type: String, required: true }, // Inhalt des Informationsobjekts (z.B. Text)
+  type: { type: String, required: true }, // Typ des Informationsobjekts
+  content: { type: String }, // Inhalt des Informationsobjekts (z.B. Text)
   linkToFile: { type: String }, // URL zu einer verknüpften Datei
   jsonObject: { type: Schema.Types.Mixed }, // JSON-Objekt für beliebige strukturierte Daten
   metaData: { type: Map, of: String }, // Map für Meta-Daten mit beliebigen Key-Value-Paaren
