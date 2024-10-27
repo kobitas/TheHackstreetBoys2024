@@ -1,0 +1,10 @@
+---
+
+- name: Add deployment user
+  ansible.builtin.user:
+    name: deployment
+    groups:
+    - docker
+    generate_ssh_key: yes
+    expires: -1
+    create_home: yes
