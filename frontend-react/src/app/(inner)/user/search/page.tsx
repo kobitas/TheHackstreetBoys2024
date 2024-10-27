@@ -92,7 +92,7 @@ const SearchPage: React.FC = () => {
               ${theme.typography.paragraph}
               ${theme.colors.textLight}
             `}>
-              No results found for "{searchQuery}"
+              No results found for &ldquo;{searchQuery}&ldquo;
             </div>
           ) : (
             <>
