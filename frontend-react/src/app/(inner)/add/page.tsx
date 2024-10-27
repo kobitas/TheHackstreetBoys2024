@@ -71,7 +71,7 @@ export default function AddPage() {
             formData.append('ignoreDuplicates', 'true')
         }
 
-        const response = await fetch('http://localhost:3000/api/info-object/upload', {
+        const response = await fetch('/api/info-object/upload', {
             method: 'POST',
             body: formData,
         })
