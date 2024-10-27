@@ -11,8 +11,8 @@ Accent: #5D41EC (Violett)
 
 > **💡 Ein zentrales System zur Verwaltung und Weitergabe von organisatorischem Wissen, Zugängen und Dokumenten, gebunden an Positionen statt Personen.**
 
-## 🔗 Quick Links `#78D1F2`
-- **[Live Anwendung](https://hackathon24.interestedowl.de)** `#5D41EC`
+## 🔗 Quick Links
+- **[Live Anwendung](https://hackathon24.interestedowl.de)** 
 - **[Figma Design](https://www.figma.com/design/RLw7oZMoLcmllxVPrI7HeW/Hackstreetsboys?node-id=0-1&t=VpoIA5kQY50jJwaZ-1)**
 
 ## 📑 Inhaltsverzeichnis `#78D1F2`
@@ -26,16 +26,16 @@ Accent: #5D41EC (Violett)
 
 ---
 
-## 🎯 Funktionsumfang `#78D1F2`
+## 🎯 Funktionsumfang 
 
-### ⚡ Informationsverwaltung `#5D41EC`
+### ⚡ Informationsverwaltung 
 - Erfassung und Speicherung verschiedener Informationstypen:
   - 📝 Passwörter & Zugangsdaten
   - 📁 Dokumentenablage
   - 🔗 URL-Verlinkungen
   - 📒 Notizen und Anleitungen
 
-### 📄 Dokumentenverarbeitung `#5D41EC`
+### 📄 Dokumentenverarbeitung
 - **OCR (Optical Character Recognition)**
   - ✨ PDF zu Text Konvertierung
   - 🖼️ Bildtext-Extraktion
@@ -50,9 +50,9 @@ Accent: #5D41EC (Violett)
 
 ---
 
-## 📑 Dokumentenverarbeitung `#78D1F2`
+## 📑 Dokumentenverarbeitung 
 
-### OCR-Funktionalitäten `#5D41EC`
+### OCR-Funktionalitäten 
 1. **PDF-Verarbeitung**
    - 📄 Extraktion von Text aus gescannten PDFs
    - 📋 Erhalt der Dokumentstruktur
@@ -68,7 +68,7 @@ Accent: #5D41EC (Violett)
 ### Verarbeitungsprozess
 ![Verarbeitungsprozess Diagramm](https://github.com/user-attachments/assets/85c359e5-7d79-4707-9ac9-84bd5f0871ea)
 
-### 📁 Unterstützte Formate `#5D41EC`
+### 📁 Unterstützte Formate 
 - **Dokumente**
   - 📄 PDF (gescannt & digital)
   - 📝 Word-Dokumente
@@ -78,7 +78,7 @@ Accent: #5D41EC (Violett)
   - 🖼️ PNG
   - 📸 JPEG
 
-### ⚙️ Funktionsmerkmale `#5D41EC`
+### ⚙️ Funktionsmerkmale 
 - **Automatische Texterkennung**
   - 🔤 Zeichensatzerkennung
   - 🌍 Sprachspezifische Optimierung
@@ -88,7 +88,7 @@ Accent: #5D41EC (Violett)
 
 ---
 
-## 🤖 KI-Integration `#78D1F2`
+## 🤖 KI-Integration 
 
 ### Text- und Dokumentenanalyse `#5D41EC`
 - **OCR-Integration**
