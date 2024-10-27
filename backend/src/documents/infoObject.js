@@ -1,6 +1,6 @@
-import mongoose from 'index.js';
+const  mongoose = require('mongoose');
 const { Schema, model } = mongoose;
-const commentSchema = require('./comment');
+const commentSchema = require('./comment.js');
 
 
 // Schema für das Informationsobjekt
@@ -12,7 +12,7 @@ const infoObjectSchema = new Schema({
   tags: [{ type: String }], // Array von Tags für die Kategorisierung
   createdAt: { type: Date, default: Date.now }, // Erstellungsdatum
   updatedAt: { type: Date, default: Date.now }, // Letztes Aktualisierungsdatum
-  comments: [commentSchema], // Array von Kommentaren als Unterdokumente
+  //comments: [commentSchema], // Array von Kommentaren als Unterdokumente
   type: { type: String, required: true }, // Typ des Informationsobjekts
   content: { type: String }, // Inhalt des Informationsobjekts (z.B. Text)
   linkToFile: { type: String }, // URL zu einer verknüpften Datei

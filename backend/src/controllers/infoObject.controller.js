@@ -1,11 +1,12 @@
-import {mongoose} from "../index";
+const mongoose = require('mongoose');
 var fs = require('fs');
 const multiparty = require('multiparty');
 const {join} = require("path");
 const {writeFile} = require("fs/promises");
 const {parse} = require("dotenv");
-const db = require("../documents/");
-const InfoObject = db.InfoObject;
+const { InfoObject } = require('../documents/infoObject');
+//const db = require("../documents/");
+//const InfoObject = db.InfoObject;
 
 exports.create = (req, res) => {
     var form = new multiparty.Form();
