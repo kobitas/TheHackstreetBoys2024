@@ -11,7 +11,7 @@ services:
   backend:
     build: backend/src
   frontend:
-    build: frontend
+    build: frontend-react
   mongodb:
     image: "mongo:8.0.3"
   ocr:
