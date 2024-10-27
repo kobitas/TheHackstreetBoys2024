@@ -2,7 +2,7 @@ import express from 'express'
 import cors from 'cors'
 import multer from 'multer'
 import cp from 'child_process'
-const expressQueue = require('express-queue');
+import expressQueue from 'express-queue'
 
 const storage = multer.diskStorage({
     destination: function(req, file, cb) {
