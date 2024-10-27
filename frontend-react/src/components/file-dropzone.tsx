@@ -4,8 +4,8 @@ import type { FC } from "react";
 import { Accept, useDropzone } from "react-dropzone";
 
 interface FileDropzoneProps {
-    files: File[]; // Change this to an array of Files
-    setFiles: (files: File[]) => void; // Update this to accept an array of Files
+    files: File[]; // Keep as array for consistency
+    setFiles: (files: File[]) => void;
     acceptedFileTypes?: Accept;
     children: React.ReactNode;
     className?: string;
@@ -13,12 +13,18 @@ interface FileDropzoneProps {
 
 const FileDropzone: FC<FileDropzoneProps> = ({ files, setFiles, acceptedFileTypes, children, className }) => {
     const onDrop = (acceptedFiles: File[]) => {
-        // eslint-disable-next-line @typescript-eslint/ban-ts-comment
-        // @ts-ignore
-        setFiles((prevFiles: File[]) => [...prevFiles, ...acceptedFiles]);
+        // Only take the first file
+        const newFile = acceptedFiles[0];
+        if (newFile) {
+            setFiles([newFile]); // Replace existing files with new single file
+        }
     };
 
-    const { getRootProps, getInputProps, isDragActive } = useDropzone({ onDrop, accept: acceptedFileTypes, multiple: true });
+    const { getRootProps, getInputProps, isDragActive } = useDropzone({ 
+        onDrop, 
+        accept: acceptedFileTypes, 
+        multiple: false // Set multiple to false to only allow single file
+    });
 
     return (
         <div className={cn(isDragActive && "bg-muted", className)} {...getRootProps()}>
