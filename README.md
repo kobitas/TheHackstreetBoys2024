@@ -71,8 +71,8 @@ Accent: #5D41EC (Violett)
 ### 📁 Unterstützte Formate 
 - **Dokumente**
   - 📄 PDF (gescannt & digital)
-  - 📝 Word-Dokumente
   - 📑 Scanned Documents
+  - 📑 GIFF
   
 - **Bilder**
   - 🖼️ PNG
@@ -99,4 +99,3 @@ Accent: #5D41EC (Violett)
   - 📑 Inhaltliche Zusammenfassung
   - 🔑 Schlüsselpunkte-Extraktion
   - 🔄 Ähnlichkeitsanalyse
-  - ⭐ OCR-Qualitätsbewertung
