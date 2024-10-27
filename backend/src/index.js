@@ -42,7 +42,3 @@ mongoose.connect(
         useUnifiedTopology: true,
     }
 )
-
-module.exports = {
-    mongoose
-}

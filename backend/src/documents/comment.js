@@ -1,4 +1,4 @@
-import mongoose from 'index.js';
+const mongoose = require('mongoose');
 const { Schema, model } = mongoose;
 
 // Schema für Kommentare
