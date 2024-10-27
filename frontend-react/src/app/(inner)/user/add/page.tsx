@@ -46,44 +46,55 @@ export default function AddUserPage() {
 
     try {
       setIsLoading(true);
-
-      // Create FormData instance
       const formData = new FormData();
-      formData.append('image', file);
       
-      // Create the record
-      const record = await pb.collection('posts').create(formData);
-      
-      // Construct the image URL
-      const imageUrl = `https://hackathon-fulda.pockethost.io/api/files/${record.collectionId}/${record.id}/${record.image}`;
-      
-      // Generate summary using API route
-      const analysisResponse = await generateImageSummary(imageUrl);
-      if (analysisResponse) {
-        const analysis = JSON.parse(analysisResponse);
-        // Update the record with AI analysis
-        const updateData = {
-          ai_topic: analysis.topic,
-          ai_summary: analysis.summary,
-          ai_keywords: analysis.keywords,
-          ai_probability: analysis.probability,
-        };
+      if (file.type === 'application/pdf') {
+        formData.append('files', file);
         
-        // Update the record with AI data
-        await pb.collection('posts').update(record.id, updateData);
-
-        const analysisWithImageUrl = { ...analysis, imageUrl: imageUrl, id: record.id };
+        const response = await fetch('/api/process-pdf', {
+          method: 'POST',
+          body: formData,
+        });
         
-        // Store the document in Qdrant
-        await storeDocument(analysisWithImageUrl);
+        const data = await response.json();
+        
+        if (!response.ok || data.response !== "OK") {
+          throw new Error('Failed to process PDF');
+        }
+        
+        // Create record in PocketBase to track the upload
+        await pb.collection('posts').create({
+          type: 'pdf',
+          filename: file.name,
+          status: 'processed'
+        });
+        
+      } else {
+        // Existing image upload logic
+        formData.append('image', file);
+        const record = await pb.collection('posts').create(formData);
+        
+        const imageUrl = `https://hackathon-fulda.pockethost.io/api/files/${record.collectionId}/${record.id}/${record.image}`;
+        
+        const analysisResponse = await generateImageSummary(imageUrl);
+        if (analysisResponse) {
+          const analysis = JSON.parse(analysisResponse);
+          const updateData = {
+            ai_topic: analysis.topic,
+            ai_summary: analysis.summary,
+            ai_keywords: analysis.keywords,
+            ai_probability: analysis.probability,
+          };
+          
+          await pb.collection('posts').update(record.id, updateData);
+          const analysisWithImageUrl = { ...analysis, imageUrl: imageUrl, id: record.id };
+          await storeDocument(analysisWithImageUrl);
+        }
       }
       
       setIsSuccess(true);
-      
-      // Reset after short delay
       setTimeout(() => {
         setIsSuccess(false);
-        // Optionally redirect or show success message
       }, 2000);
 
     } catch (error) {
