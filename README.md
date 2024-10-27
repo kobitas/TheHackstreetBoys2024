@@ -7,7 +7,7 @@ Secondary: #101093 (dunkles Blau)
 Accent: #5D41EC (Violett)
 -->
 
-# 🌟 Organisationswissen - Zentrale Dokumentation
+# 🌟 Wissenswert - Zentrale Dokumentation
 
 > **💡 Ein zentrales System zur Verwaltung und Weitergabe von organisatorischem Wissen, Zugängen und Dokumenten, gebunden an Positionen statt Personen.**
 
