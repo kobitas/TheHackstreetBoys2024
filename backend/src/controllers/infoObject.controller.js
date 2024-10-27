@@ -5,13 +5,55 @@ const {join} = require("path");
 const {writeFile} = require("fs/promises");
 const {parse} = require("dotenv");
 const { InfoObject } = require('../documents/infoObject');
+const { OpenAI } = require('openai');
+const { QdrantClient } = require('@qdrant/js-client-rest');
+//import { OpenAI } from 'openai'
+//import { QdrantClient } from '@qdrant/js-client-rest'
+//import { VectorDocumentMeta } from '@/lib/qdrant'
+
 //const db = require("../documents/");
 //const InfoObject = db.InfoObject;
+
+const openai = new OpenAI({
+    apiKey: process.env.OPENAI_API_KEY,
+})
+
+const qdrantClient = new QdrantClient({
+    url: process.env.QDRANT_HOST,
+    apiKey: process.env.QDRANT_API_KEY,
+})
+
+async function getEmbedding(text) {
+    const response = await openai.embeddings.create({
+        model: "text-embedding-ada-002",
+        input: text,
+    })
+    return response.data[0]?.embedding || []
+}
+
+async function storeToVector(json) {
+    let { content, filename }  = json;
+    InfoObject.findOneAndUpdate({name: filename}, { content: content});
+
+    const vector = await getEmbedding(content);
+    const collectionInfo = await qdrantClient.getCollection("hackathon");
+    const nextId = collectionInfo.points_count;
+
+    const point = {
+        id: nextId,
+        vector: vector,
+        payload: document,
+    }
+
+    const result = await qdrantClient.upsert("hackathon", {
+        points: [point],
+    });
+}
 
 exports.create = (req, res) => {
     var form = new multiparty.Form();
     let parsedFiles = [];
-    form.parse(req, function(err, fields, files) {
+    form.parse(req, async function(err, fields, files) {
         // fields fields fields
         console.log(files);
         parsedFiles = files.files.map(async file => {
@@ -45,7 +87,7 @@ exports.create = (req, res) => {
     });
     // For further completeness end initial request and process the files individually based on there type
 
-    res.send('OK');
+    res.send(200).json({response: 'OK'});
     parsedFiles.forEach(file => {
         const formData = new FormData()
 
@@ -57,9 +99,8 @@ exports.create = (req, res) => {
                 body: formData,
             })
                 .then(r => r.json() )
-                .then(json => {
-                let { content, filename }  = json;
-                InfoObject.findOneAndUpdate({name: filename}, { content: content});
+                .then(async json => {
+                    await storeToVector(json);
             });
         } else if (file.type.includes('application/pdf') || file.type.includes('application/msword') || file.type.includes('application/rtf') || file.type.includes('application/vnd.oasis.opendocument')) {
             fetch('ocr:3000/api/pdf', {
@@ -67,12 +108,13 @@ exports.create = (req, res) => {
                 body: formData,
             })
                 .then(r => r.json() )
-                .then(json => {
-                let { content, filename } = json;
-                    InfoObject.findOneAndUpdate({name: filename}, { content: content});
+                .then(async json => {
+                    await storeToVector(json);
             })
         }
-    })
+    });
+
+
 
 
     // let tmp_path = req.files.thumbnail.path;
