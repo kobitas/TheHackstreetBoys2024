@@ -1,0 +1,17 @@
+---
+- name: Create a directory if it does not exist
+  ansible.builtin.file:
+    path: "/home/deployment/{{ deployment_env }}"
+    state: directory
+    mode: '0755'
+
+- name: Git checkout
+  ansible.builtin.git:
+    repo: "git@github.com:kobitas/{{ repo_name }}"
+    dest: "/home/deployment/{{ deployment_env }}"
+    version: "{{ deployment_env }}"
+
+- name: Run `docker-compose up` again
+  community.docker.docker_compose_v2:
+    project_src: "/home/deployment/{{ deployment_env }}/"
+    build: always
