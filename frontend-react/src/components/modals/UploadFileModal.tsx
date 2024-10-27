@@ -56,7 +56,7 @@ export function UploadFileModal({ isOpen, onClose }: UploadFileModalProps) {
       formData.append('title', title)
       formData.append('description', description)
 
-      const response = await fetch('/api/generate-summary', {
+      const response = await fetch('localhost:3000/info-object/generate-summary', {
         method: 'POST',
         body: formData,
       })
